@@ -1,0 +1,45 @@
+name: Convert Issues to Files
+
+on:
+  issues:
+    types: [opened, edited, labeled, unlabeled, reopened]
+  schedule:
+    - cron: '0 */6 * * *' # every 6 hours
+  workflow_dispatch: {}
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Convert issues to files
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LABELS: 'auto-export'
+        run: node scripts/convert_issues.js
+
+      - name: Commit generated files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add errors || true
+          if ! git diff --staged --quiet; then
+            git commit -m "chore: export issues to files [skip ci]" || true
+            git push
+          else
+            echo "No changes to commit"
+          fi

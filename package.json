@@ -1,0 +1,15 @@
+{
+  "name": "convert-issues-to-files",
+  "version": "0.1.0",
+  "description": "Tool to convert GitHub issues with a label into files organized by date",
+  "main": "scripts/convert_issues.js",
+  "scripts": {
+    "convert": "node scripts/convert_issues.js"
+  },
+  "dependencies": {
+    "@octokit/rest": "^19.0.7"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

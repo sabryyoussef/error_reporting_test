@@ -1,0 +1,16 @@
+name: Odoo Issue Processor
+description: A GitHub Action to automatically convert Odoo error issues into organized markdown files and folders in a repository.
+inputs:
+  github_token:
+    description: 'GitHub token for authentication'
+    required: true
+  repository:
+    description: 'The repository to process issues from'
+    required: true
+outputs:
+  files_created:
+    description: 'The number of files created from issues'
+    value: 'steps.process.outputs.files_created'
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
