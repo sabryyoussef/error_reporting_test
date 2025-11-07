@@ -1,0 +1,1 @@
+# Error reports\n\nGenerated index. Total new/updated exported issues in this run: 1\n\n- [2025-11-07](./2025-11-07/) — 1 issue(s)\n
