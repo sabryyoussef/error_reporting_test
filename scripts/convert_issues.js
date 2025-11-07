@@ -24,13 +24,16 @@ const { Octokit } = require('@octokit/rest');
 
     console.log(`Listing issues for ${owner}/${repo} with label(s): ${labelFilter}`);
 
-    const issues = await octokit.paginate(octokit.issues.listForRepo, {
+    // Build params for listing issues. If LABELS is empty, don't send the labels param
+    const listParams = {
       owner,
       repo,
-      labels: labelFilter,
       state: 'all',
       per_page: 100,
-    });
+    };
+    if (labelFilter) listParams.labels = labelFilter;
+
+    const issues = await octokit.paginate(octokit.issues.listForRepo, listParams);
 
     console.log(`Found ${issues.length} issue(s) matching labels: ${labelFilter}`);
 
