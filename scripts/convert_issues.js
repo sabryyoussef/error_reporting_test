@@ -113,15 +113,19 @@ ${tableRows}
     }
 
     // Create index.md
-    const indexPath = path.join(process.cwd(), 'errors', 'index.md');
-    const dateLines = Object.entries(byDate)
-      .sort((a, b) => (a[0] < b[0] ? 1 : -1))
-      .map(([dateKey, items]) => `- [${dateKey}](./${dateKey}/) — ${items.length} issue(s)`)
-      .join('\n');
-    const total = Object.values(byDate).reduce((s, arr) => s + arr.length, 0);
-    const indexContent = `# Error reports\n\nGenerated index. Total new/updated exported issues in this run: ${total}\n\n${dateLines}\n`;
-    fs.writeFileSync(indexPath, indexContent, 'utf8');
-    console.log(`Wrote ${indexPath}`);
+      // Create index.md (ensure errors/ exists even if there were no matching issues)
+      const errorsDir = path.join(process.cwd(), 'errors');
+      fs.mkdirSync(errorsDir, { recursive: true });
+
+      const indexPath = path.join(errorsDir, 'index.md');
+      const entries = Object.entries(byDate).sort((a, b) => (a[0] < b[0] ? 1 : -1));
+      const dateLines = entries
+        .map(([dateKey, items]) => `- [${dateKey}](./${dateKey}/) — ${items.length} issue(s)`)
+        .join('\\n');
+      const total = Object.values(byDate).reduce((s, arr) => s + arr.length, 0);
+      const indexContent = `# Error reports\\n\\nGenerated index. Total new/updated exported issues in this run: ${total}\\n\\n${dateLines || 'No issues found.'}\\n`;
+      fs.writeFileSync(indexPath, indexContent, 'utf8');
+      console.log(`Wrote ${indexPath}`);
 
     console.log('Done.');
   } catch (err) {
