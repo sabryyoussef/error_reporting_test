@@ -5,7 +5,7 @@ created_at: 2025-11-07T04:55:02Z
 updated_at: 2025-11-07T04:55:02Z
 labels: ["auto-export"]
 url: https://github.com/sabryyoussef/error_reporting_test/issues/21
-converted_at: 2026-07-24T00:16:04.090Z
+converted_at: 2026-07-24T06:44:46.211Z
 ---
 
 # CI test: trigger convert-issues workflow
